@@ -5,7 +5,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: 'Italianno';
-  background:linear-gradient(to top, rgb(227, 25, 166), rgb(0, 0, 0)),url('/public/img/bg.jpg');
+  background:linear-gradient(to top, rgba(227, 25, 166, 0.34), rgba(0, 0, 0, 0.647)),url('/public/img/bg.jpg') no-repeat;
+  background-size: cover;
   height: 100vh;
   color:rgb(240, 207, 255);
   font-size: 2rem;
