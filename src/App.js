@@ -1,18 +1,33 @@
 import { useState } from 'react';
 
 import './App.css';
-const cardImg= [
-  { "src": "public/img/UwU.jpg" },
-  { "src": "public/img/awr.jpg"},
-  { "src": "public/img/diva.jpg"},
-  { "src": "public/img/dracUwU.jpg"},
-  { "src": "public/img/korn.jpg"},
-  { "src": "public/img/rawr.jpg"},
+import SingleCard from './components/singleCard';
+// At the TOP of App.js
+import awr from './img/awr.jpg';
+import diva from './img/diva.jpg';
+import dracUwU from './img/dracUwU.jpg';
+import korn from './img/korn.jpg';
+import rawr from './img/rawr.jpg';
+import UwU from './img/UwU.jpg';
+ 
+
+
+// Then use the imports
+const cardImg = [
+  { src: awr },
+  { src: diva },
+  { src: dracUwU },
+  { src: korn },
+  { src: rawr },
+  { src: UwU },
 ];
+
 
 function App() {
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
+  const[choiceOne, setChoiceOne]= useState (null);
+  const[choiceTwo, setChoiceTwo]= useState (null);
   //shuffle cards
     const shuffleCards = () => {
       const shuffledCards = [...cardImg, ...cardImg]
@@ -24,7 +39,22 @@ function App() {
     }
       
     console.log(cards, turns);
-
+    const handleChoice = (card) => {
+      console.log(card);
+      if(choiceOne){
+        setChoiceTwo(card);
+      }else{
+        setChoiceOne(card);
+      }
+    }
+    if(choiceOne && choiceTwo){
+      console.log("choices", choiceOne, choiceTwo);
+    }
+    const resetTurn = () => {
+      setChoiceOne(null);
+      setChoiceTwo(null);
+      setTurns(prevTurns => prevTurns + 1);
+    }
 
 
   return (
@@ -33,13 +63,10 @@ function App() {
       <button onClick={shuffleCards}>Start Game</button>
       <div className="card-grid">
         {cards.map(card =>(
-          <div key={card.id} className="card">
-            <div>
-              <img src={card.src} alt="card front" className="front-face"/>
-              <img src="public/img/cover.jpg" alt="card back" className="back-face"/>
-            </div>
-          </div>
-        ))}
+          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
+        )
+        )
+        }
       </div>
     </div>
   );

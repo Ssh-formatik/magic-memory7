@@ -26,8 +26,13 @@ button:active{
   transform: scale(0.98);
 }
 .card-grid{
+  width: 70%;
+  height: 70%;
+  border: 4px dashed #ffbaf1;
+  padding: 15px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin: 20px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap:20px;
+  margin:40px auto;
+  box-sizing: border-box;
 }
