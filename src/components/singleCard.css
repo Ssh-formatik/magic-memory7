@@ -12,14 +12,28 @@
   border-radius: 12px;
   border: 1px solid #fffbfe;
 }
-.front-face {
+.card .front-face {
   position: absolute;
   top: 0;
   left: 0;
+  transform: rotateY(90deg);
+  transition: all ease-in 0.2s;
+}
+.card .back-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateY(0deg);
+  transition-delay: 0.2s;
 }
 
-.back-face {
-  position: absolute;
-  top: 0;
-  left: 0;
+
+.flipped .front-face {
+  transform: rotateY(0deg);
+  transition: transform 0.5s;
+  
+}
+.flipped .back-face {
+  transform: rotateY(90deg);
+  transition: transform 0s;
 }

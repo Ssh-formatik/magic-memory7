@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import './App.css';
 import SingleCard from './components/singleCard';
@@ -14,12 +14,12 @@ import UwU from './img/UwU.jpg';
 
 // Then use the imports
 const cardImg = [
-  { src: awr },
-  { src: diva },
-  { src: dracUwU },
-  { src: korn },
-  { src: rawr },
-  { src: UwU },
+  { src: awr, matched: false },
+  { src: diva, matched: false },
+  { src: dracUwU, matched: false },
+  { src: korn, matched: false },
+  { src: rawr, matched: false },
+  { src: UwU, matched: false },
 ];
 
 
@@ -28,6 +28,7 @@ function App() {
   const [turns, setTurns] = useState(0);
   const[choiceOne, setChoiceOne]= useState (null);
   const[choiceTwo, setChoiceTwo]= useState (null);
+  const [comparing, setComparing] = useState(false);
   //shuffle cards
     const shuffleCards = () => {
       const shuffledCards = [...cardImg, ...cardImg]
@@ -35,11 +36,15 @@ function App() {
         .map((card) => ({ ...card, id: Math.random() }));
       
       setCards(shuffledCards);
+      setChoiceOne(null);
+      setChoiceTwo(null);
       setTurns(0);
     }
       
     console.log(cards, turns);
+
     const handleChoice = (card) => {
+      if(!comparing){
       console.log(card);
       if(choiceOne){
         setChoiceTwo(card);
@@ -47,14 +52,40 @@ function App() {
         setChoiceOne(card);
       }
     }
-    if(choiceOne && choiceTwo){
-      console.log("choices", choiceOne, choiceTwo);
     }
-    const resetTurn = () => {
+     const resetTurn = () => {
       setChoiceOne(null);
       setChoiceTwo(null);
       setTurns(prevTurns => prevTurns + 1);
     }
+    useEffect(() => {
+    if(choiceOne && choiceTwo){
+      setComparing(true);
+      
+      if(choiceOne.src === choiceTwo.src){
+       setCards(prevCards => { return prevCards.map(card => {
+        if (card.src === choiceOne.src){
+          return {...card, matched: true};
+        } else {
+          return card;
+        };
+       })
+      })
+       setComparing(false);
+       resetTurn();
+      }else{
+        setTimeout(() => {
+          setComparing(false);
+          resetTurn();
+        }, 1000);
+        
+        
+      }
+      
+    }}, [choiceOne, choiceTwo]);
+   useEffect(() => { 
+    shuffleCards();
+    }, []);
 
 
   return (
@@ -63,11 +94,17 @@ function App() {
       <button onClick={shuffleCards}>Start Game</button>
       <div className="card-grid">
         {cards.map(card =>(
-          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
+          <SingleCard 
+          key={card.id} card={card} 
+          handleChoice={handleChoice} 
+          flipped={card === choiceOne || card === choiceTwo || card.matched}
+         
+          />
         )
         )
         }
       </div>
+      <div className='turns'>Turns: {turns}</div>
     </div>
   );
 }
